@@ -1,10 +1,9 @@
 import { orderService } from "./order.service";
-import { IOrder } from "./order.interface";
 import { Request, Response } from "express";
 import { productService } from "../product/product.service";
 import { userService } from "../user/user.service";
 
-const createOrder = async (req: Request, res: Response):Promise<any> => {
+const createOrder = async (req: Request, res: Response)=> {
     try {
         const payload = req.body;
 
@@ -41,11 +40,11 @@ const createOrder = async (req: Request, res: Response):Promise<any> => {
             message: "Order created successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error:unknown) {
         res.json({
             status: false,
             message: "Failed to create order!",
-            error: error.message || "An error occurred while creating"
+            error: error || "An error occurred while creating"
         })
     }
 }
@@ -60,11 +59,11 @@ const getTotalRevenue = async (req: Request, res: Response) => {
             message: "Total revenue calculated successfully",
             data: {totalRevenue}
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to calculate total revenue!",
-            error: error.message || "An error occurred while creating"
+            error: error || "An error occurred while creating"
         })
     }
 }
@@ -88,7 +87,7 @@ const getOrders = async (req: Request, res: Response) => {
             message: "Orders fetched successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to fetch orders!",

@@ -12,7 +12,7 @@ const createProduct = async (req: Request, res: Response) => {
             message: "Bike created successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             success: false,
             message: "Failed to create bike!",
@@ -45,7 +45,7 @@ const getProduct = async (req: Request, res: Response) => {
             message: "Bikes fetched successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to fetch bikes!",
@@ -63,7 +63,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
             message: "Bike data fetched successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to fetch bike",
@@ -82,7 +82,7 @@ const updateProduct = async (req: Request, res: Response) => {
             message: "Bike updated successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to update bike",
@@ -94,14 +94,14 @@ const deleteProduct = async (req: Request, res: Response) => {
     try {
 
         const id = req.params.productId;  
-        const result = await productService.deleteProduct(id);
+        await productService.deleteProduct(id);
 
         res.send({
             status: true,
             message: "Bike deleted successfully",
             data: {}
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to delete bike",

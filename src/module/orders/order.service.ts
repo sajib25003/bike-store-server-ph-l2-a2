@@ -1,5 +1,3 @@
-import Product from "../product/product.model";
-import User from "../user/user.model";
 import { IOrder } from "./order.interface";
 import Order from "./order.model";
 

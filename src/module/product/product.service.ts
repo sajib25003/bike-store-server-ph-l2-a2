@@ -7,7 +7,7 @@ const createProduct = async (payload: IProduct): Promise<IProduct> => {
 }
 
 const getProduct = async (searchTerm?: string) => {
-    const filter: any = {};
+    const filter: Record<string, unknown> = {};
 
     if (searchTerm) {
         filter.$or = [

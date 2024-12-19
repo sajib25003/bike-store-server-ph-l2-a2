@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import User from "./user.model";
 import { userService } from "./user.service";
 
 // managing request & response
@@ -14,7 +13,7 @@ const createUser = async (req: Request, res: Response) => {
             message: "User created successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             success: false,
             message: "Failed to create user",
@@ -32,7 +31,7 @@ const getUser = async (req: Request, res: Response) => {
             message: "User data fetched successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             success: false,
             message: "Failed to fetch user",
@@ -50,7 +49,7 @@ const getSingleUser = async (req: Request, res: Response) => {
             message: "User data fetched successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             success: false,
             message: "Failed to fetch user",
@@ -69,7 +68,7 @@ const updateUser = async (req: Request, res: Response) => {
             message: "User data updated successfully",
             data: result
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             success: false,
             message: "Failed to update user",
@@ -81,14 +80,14 @@ const deleteUser = async (req: Request, res: Response) => {
     try {
 
         const userId = req.params.id;  
-        const result = await userService.deleteUser(userId);
+        await userService.deleteUser(userId);
 
         res.send({
             success: true,
             message: "User deleted successfully",
             data: {}
         })
-    } catch (error: any) {
+    } catch (error: unknown) {
         res.json({
             success: false,
             message: "Failed to delete user",
