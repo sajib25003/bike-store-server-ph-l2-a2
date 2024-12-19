@@ -2,6 +2,7 @@ import { orderService } from "./order.service";
 import { IOrder } from "./order.interface";
 import { Request, Response } from "express";
 import { productService } from "../product/product.service";
+import { userService } from "../user/user.service";
 
 const createOrder = async (req: Request, res: Response):Promise<any> => {
     try {
@@ -16,6 +17,13 @@ const createOrder = async (req: Request, res: Response):Promise<any> => {
             });
         }
 
+        const user = await userService.findUserByEmail(email); // Replace with your User service
+        if (!user) {
+            return res.status(404).json({
+                status: false,
+                message: "User with the given email does not exist!",
+            });
+        }
         
         const productData = await productService.updateProductQuantity(product, quantity);
 

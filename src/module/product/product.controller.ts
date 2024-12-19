@@ -34,6 +34,8 @@ const getProduct = async (req: Request, res: Response) => {
             price: product.price,
             description: product.description,
             category: product.category,
+            quantity: product.quantity,
+            inStock: product.inStock,
             createdAt: product.createdAt, 
             updatedAt: product.updatedAt  
         }));

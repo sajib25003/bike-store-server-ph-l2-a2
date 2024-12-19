@@ -24,10 +24,18 @@ const deleteUser = async (id: string) => {
     return result
 }
 
+const findUserByEmail = async (email: string) => {
+    const user = await User.findOne({ email }); 
+    return user;
+};
+
+
+
 export const userService = {
     createUser,
     getUser,
     getSingleUser,
     updateUser,
     deleteUser,
+    findUserByEmail
 }

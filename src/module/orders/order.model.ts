@@ -5,8 +5,15 @@ import Product from '../product/product.model';
 const orderSchema = new Schema<IOrder>({
     email: {
         type: String,
-        required: [true, 'Please enter user email!'],
-        ref: 'User'
+        required: [true, 'Please enter your email!'],
+        unique: true,
+        validate: {
+            validator: function (value: string) {
+                return /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/.test(value)
+            },
+            message: '{VALUE} is not a valid email. '
+        },
+        immutable: true
     },
     product: {
         type: String,
