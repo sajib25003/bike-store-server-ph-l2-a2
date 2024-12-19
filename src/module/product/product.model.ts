@@ -33,8 +33,12 @@ const productSchema = new Schema<IProduct>({
         type: Boolean,
         required: [true, 'Please enter product price!'],
         default: true
-    },
-})
+    }
+},
+    {
+        timestamps: true
+    }
+)
 
 const Product = model<IProduct>("Product", productSchema);
 

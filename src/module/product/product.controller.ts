@@ -24,16 +24,28 @@ const createProduct = async (req: Request, res: Response) => {
 const getProduct = async (req: Request, res: Response) => {
     try {
 
-        const result = await productService.getProduct();
+        const { searchTerm } = req.query;
+        const products = await productService.getProduct(searchTerm as string);
+
+        const result = products.map(product => ({
+            _id: product._id,
+            name: product.name,
+            brand: product.brand,
+            price: product.price,
+            description: product.description,
+            category: product.category,
+            createdAt: product.createdAt, 
+            updatedAt: product.updatedAt  
+        }));
 
         res.send({
-            success: true,
+            status: true,
             message: "Bikes fetched successfully",
             data: result
         })
     } catch (error: any) {
         res.json({
-            success: false,
+            status: false,
             message: "Failed to fetch bikes!",
             error
         })
@@ -41,17 +53,17 @@ const getProduct = async (req: Request, res: Response) => {
 }
 const getSingleProduct = async (req: Request, res: Response) => {
     try {
-        const userId = req.params.id;
+        const userId = req.params.productId;
         const result = await productService.getSingleProduct(userId);
 
         res.send({
-            success: true,
+            status: true,
             message: "Bike data fetched successfully",
             data: result
         })
     } catch (error: any) {
         res.json({
-            success: false,
+            status: false,
             message: "Failed to fetch bike",
             error
         })
@@ -59,18 +71,18 @@ const getSingleProduct = async (req: Request, res: Response) => {
 }
 const updateProduct = async (req: Request, res: Response) => {
     try {
-        const id = req.params.id;
+        const id = req.params.productId;
         const data = req.body; 
         const result = await productService.updateProduct(id, data);
 
         res.send({
-            success: true,
+            status: true,
             message: "Bike updated successfully",
             data: result
         })
     } catch (error: any) {
         res.json({
-            success: false,
+            status: false,
             message: "Failed to update bike",
             error
         })
@@ -79,17 +91,17 @@ const updateProduct = async (req: Request, res: Response) => {
 const deleteProduct = async (req: Request, res: Response) => {
     try {
 
-        const id = req.params.id;  
+        const id = req.params.productId;  
         const result = await productService.deleteProduct(id);
 
         res.send({
-            success: true,
+            status: true,
             message: "Bike deleted successfully",
-            data: result
+            data: {}
         })
     } catch (error: any) {
         res.json({
-            success: false,
+            status: false,
             message: "Failed to delete bike",
             error
         })

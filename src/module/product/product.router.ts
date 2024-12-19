@@ -3,11 +3,11 @@ import { productController } from "./product.controller";
 
 const productRouter = Router();
 
-productRouter.post('/create-product', productController.createProduct);
+productRouter.post('/', productController.createProduct);
 productRouter.get('/', productController.getProduct);
-productRouter.get('/:id', productController.getSingleProduct);
-productRouter.put('/:id', productController.updateProduct);
-productRouter.delete('/:id', productController.deleteProduct);
+productRouter.get('/:productId', productController.getSingleProduct);
+productRouter.put('/:productId', productController.updateProduct);
+productRouter.delete('/:productId', productController.deleteProduct);
 
 
 
