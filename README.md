@@ -101,10 +101,7 @@ To lint the project:
 npm run lint
 ```
 
-###
 
-```bash
-```
 
 ## Deployment
 
