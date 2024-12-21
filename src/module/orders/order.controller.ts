@@ -1,16 +1,16 @@
-import { orderService } from "./order.service";
 import { Request, Response } from "express";
-import { productService } from "../product/product.service";
+import { orderService } from "./order.service";
 import { userService } from "../user/user.service";
+import { productService } from "../product/product.service";
 
-const createOrder = async (req: Request, res: Response)=> {
+const createOrder = async (req: Request, res: Response): Promise<void> => {
     try {
         const payload = req.body;
 
         const { email, product, quantity, totalPrice } = payload;
 
         if (!product || !quantity || !email || !totalPrice) {
-            return res.status(400).json({
+            res.status(400).json({
                 status: false,
                 message: "Product, quantity, email, and total price are required!",
             });
@@ -18,20 +18,27 @@ const createOrder = async (req: Request, res: Response)=> {
 
         const user = await userService.findUserByEmail(email); // Replace with your User service
         if (!user) {
-            return res.status(404).json({
+            res.status(404).json({
                 status: false,
                 message: "User with the given email does not exist!",
             });
+            return
         }
-        
-        const productData = await productService.updateProductQuantity(product, quantity);
 
-        if (!productData) {
-            return res.status(400).json({
+        const productData = await productService.getSingleProduct(product);
+
+        if (!productData || !productData.inStock) {
+            res.status(400).json({
                 status: false,
-                message: "Product not found or insufficient quantity!",
+                message: productData
+                    ? "Insufficient stock!"
+                    : "Product not found!",
             });
+            return
         }
+
+        // Update the product quantity after the stock check
+        await productService.updateProductQuantity(product, quantity);
 
         const result = await orderService.createOrder(payload);
 
@@ -40,24 +47,26 @@ const createOrder = async (req: Request, res: Response)=> {
             message: "Order created successfully",
             data: result
         })
-    } catch (error:unknown) {
+        return
+    } catch (error: unknown) {
         res.json({
             status: false,
             message: "Failed to create order!",
-            error: error || "An error occurred while creating"
+            error
         })
+        return
     }
 }
 
 const getTotalRevenue = async (req: Request, res: Response) => {
-    try{
+    try {
 
         const totalRevenue = await orderService.calculateTotalRevenue();
 
         res.json({
             status: true,
             message: "Total revenue calculated successfully",
-            data: {totalRevenue}
+            data: { totalRevenue }
         })
     } catch (error: unknown) {
         res.json({
@@ -78,8 +87,8 @@ const getOrders = async (req: Request, res: Response) => {
             product: order.product,
             quantity: order.quantity,
             totalPrice: order.totalPrice,
-            createdAt: order.createdAt, 
-            updatedAt: order.updatedAt  
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt
         }));
 
         res.send({
